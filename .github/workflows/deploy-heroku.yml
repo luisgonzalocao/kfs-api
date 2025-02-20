@@ -49,18 +49,12 @@ jobs:
           echo $HEROKU_API_KEY | heroku auth:token
           heroku git:remote -a kfs-api
 
-      - name: Configure SSH for Heroku
-        env:
-          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+      - name: Configure Git for Heroku
         run: |
-          mkdir -p ~/.ssh
-          echo "$HEROKU_API_KEY" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan -H heroku.com >> ~/.ssh/known_hosts
-          heroku keys:add ~/.ssh/id_rsa
+          git config --global user.email "github-actions@github.com"
+          git config --global user.name "GitHub Actions"
+          git remote set-url heroku https://heroku:$HEROKU_API_KEY@git.heroku.com/kfs-api.git
 
-      - name: Deploy to Heroku via SSH
+      - name: Deploy to Heroku
         run: |
-          git remote set-url heroku git@heroku.com:kfs-api.git
           git push heroku main
-
