@@ -50,10 +50,12 @@ jobs:
           heroku git:remote -a kfs-api
 
       - name: Configure Git for Heroku
+        env:
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
         run: |
           git config --global user.email "github-actions@github.com"
           git config --global user.name "GitHub Actions"
-          git remote set-url heroku https://heroku:$HEROKU_API_KEY@git.heroku.com/kfs-api.git
+          echo "machine git.heroku.com login heroku password $HEROKU_API_KEY" > ~/.netrc
 
       - name: Deploy to Heroku
         run: |
