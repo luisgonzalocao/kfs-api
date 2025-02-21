@@ -1,4 +1,4 @@
-# Jobberwocky API
+# KFS API
 
 KFS API is a service designed to search for available flights based on a specified date, origin, and destination. It handles the retrieval of flight events, computes the available journeys (direct or with one connection), and returns them in an easily consumable format. This service is ideal for travel booking systems and can be consumed through its REST API.
 
