@@ -9,6 +9,10 @@ jobs:
     name: Run FastAPI Tests
     runs-on: ubuntu-latest
 
+    env:
+      API_URL: ${{ vars.API_URL }}
+      CLIENT_MODE: ${{ vars.CLIENT_MODE }}
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3

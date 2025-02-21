@@ -1,66 +1,23 @@
-from fastapi import FastAPI, Query
-from datetime import datetime, timedelta
-from typing import List, Dict
-from kfs.clients.flight_api import FlightAPIClient
+import logging
+from fastapi import FastAPI, Query, Depends
 
-app = FastAPI(title="K Flight Searchs", description="API for searching flights", version="1.0.0")
+from kfs.services.search_service import SearchService
+from kfs.utils import validate_date
 
-# Initialize the Flight API client
-flight_client = FlightAPIClient()
+# Configure logging
+logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
+logger = logging.getLogger(__name__)
 
-
-def parse_datetime(datetime_str: str) -> datetime:
-    """Parses an ISO 8601 datetime string to a datetime object."""
-    return datetime.strptime(datetime_str, "%Y-%m-%dT%H:%M:%S.%fZ")
-
-
-def find_possible_journeys(flight_events: List[Dict], origin: str, destination: str, date: str):
-    """Finds possible journeys based on given constraints."""
-    date = datetime.strptime(date, "%Y-%m-%d")
-    direct_flights = []
-    connecting_flights = []
-
-    for flight in flight_events:
-        dep_time = parse_datetime(flight["departure_datetime"])
-        arr_time = parse_datetime(flight["arrival_datetime"])
-
-        if dep_time.date() != date.date():
-            continue  # Only consider flights departing on the given date
-
-        if flight["departure_city"] == origin and flight["arrival_city"] == destination:
-            direct_flights.append({"connections": 0, "path": [flight]})
-
-    # Find connections with a maximum of 2 flights
-    for flight1 in flight_events:
-        if flight1["departure_city"] != origin:
-            continue
-
-        for flight2 in flight_events:
-            if (
-                flight1["arrival_city"] == flight2["departure_city"]
-                and flight2["arrival_city"] == destination
-            ):
-                dep_time1 = parse_datetime(flight1["departure_datetime"])
-                arr_time1 = parse_datetime(flight1["arrival_datetime"])
-                dep_time2 = parse_datetime(flight2["departure_datetime"])
-                arr_time2 = parse_datetime(flight2["arrival_datetime"])
-
-                total_duration = arr_time2 - dep_time1
-                connection_time = dep_time2 - arr_time1
-
-                if total_duration <= timedelta(hours=24) and timedelta(hours=0) <= connection_time <= timedelta(hours=4):
-                    connecting_flights.append({"connections": 1, "path": [flight1, flight2]})
-
-    return direct_flights + connecting_flights
+app = FastAPI(title="Kiu Flight Service", description="API for searching flights", version="2.0.0")
 
 
 @app.get("/journeys/search")
 def search_journeys(
-    date: str = Query(..., description="Date in YYYY-MM-DD format"),
-    origin: str = Query(..., min_length=3, max_length=3, description="3-letter origin airport code"),
-    destination: str = Query(..., min_length=3, max_length=3, description="3-letter destination airport code"),
+    date: str = Depends(validate_date),
+    from_: str = Query(..., alias="from", min_length=3, max_length=3,
+                       description="origin airport code"),
+    to: str = Query(..., min_length=3, max_length=3,
+                    description="destination airport code"),
 ):
-    """Searches for available journeys based on date, origin, and destination."""
-    flight_events = flight_client.fetch_flight_events()
-    journeys = find_possible_journeys(flight_events, origin, destination, date)
-    return journeys
+    service = SearchService(date_str=date, origin=from_, destination=to)
+    return service.journeys
