@@ -9,9 +9,10 @@ KFS API is a service designed to search for available flights based on a specifi
 1. Features
 2. Requirements
 3. Installation
-4. Documentation
-5. Access to deployed API.
-6. Support
+4. Testing
+5. Documentation
+6. Access to deployed API.
+7. Support
 
 
 
@@ -28,9 +29,8 @@ KFS API is a service designed to search for available flights based on a specifi
 ---
 
 # ⚙️ Requirements
-- Python 3.8+
 - Docker (for running the application in a containerized environment).
-- Git (for version control).
+- Git (for clone).
 
 ---
 
@@ -54,20 +54,27 @@ KFS API is a service designed to search for available flights based on a specifi
 
 4. Start API Server:
     ```
-    ocker run --env-file .env -p 8000:8000 kfs-api
+    docker run --env-file .env -p 8000:8000 kfs-api
     ```
 
 ---
 
+# ✅ Testing
+
+1. Run tests:
+    ```bash
+    docker run --rm --env-file .env -it kfs-api pytest
+    ```
+
 #  📝 Documentation
 
-The API's Swagger UI provides an interactive interface for exploring all available endpoints and testing requests.
+The API's Swagger UI provides an interactive interface.
 
 You can access it directly in local at: http://localhost:8000/docs/
 
 
-# 🚀 Deployed api
--  api url: https://kfs-api-a119fbfb4496.herokuapp.com/
+# 🚀 API Deployed
+- api url:  https://kfs-api-a119fbfb4496.herokuapp.com/
 - api docs: https://kfs-api-a119fbfb4496.herokuapp.com/docs/
 
 
