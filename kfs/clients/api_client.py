@@ -1,8 +1,9 @@
-
-import os
+import logging
 import requests
 from typing import List, Dict
-from .base_client import BaseClient
+
+from kfs.clients.base_client import BaseClient
+from kfs.clients.exceptions import APIClientException
 from kfs.settings import settings
 
 
@@ -18,5 +19,5 @@ class APIClient(BaseClient):
             response.raise_for_status()
             return response.json()
         except requests.RequestException as e:
-            print(f"Error fetching events from API: {e}")
-            return []
+            logging.error(f"Error fetching events from API: {e}")
+            raise APIClientException()
