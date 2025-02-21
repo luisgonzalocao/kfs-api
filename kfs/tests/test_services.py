@@ -5,13 +5,10 @@ from kfs.settings import settings
 def test_search_service_with_test_mode(monkeypatch):
     """Tests that SearchService works correctly in TEST mode with FakeClient."""
 
-    # Simula CLIENT_MODE = "TEST"
     monkeypatch.setattr(settings, "CLIENT_MODE", "TEST")
 
-    # Inicializa el SearchService con la fecha, origen y destino
     search_service = SearchService(date_str="2025-03-10", origin="BUE", destination="MAD")
 
-    # Resultados esperados
     expected_result = [
         {
             "connections": 0,
@@ -46,7 +43,5 @@ def test_search_service_with_test_mode(monkeypatch):
         }
     ]
 
-    # Obtén los resultados del servicio
     result = search_service.get_response()
-    # Compara el resultado con los resultados esperados
     assert result == expected_result
