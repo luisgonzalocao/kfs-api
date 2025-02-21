@@ -50,15 +50,16 @@ jobs:
           echo "machine api.heroku.com login heroku password $HEROKU_API_KEY" > ~/.netrc
           echo "machine git.heroku.com login heroku password $HEROKU_API_KEY" >> ~/.netrc
           chmod 600 ~/.netrc
-          heroku auth:whoami  # Verifica que la autenticación funcione correctamente
+          heroku auth:whoami
 
       - name: Configure Git for Heroku
         run: |
           git config --global user.email "github-actions@github.com"
           git config --global user.name "GitHub Actions"
           heroku git:remote -a kfs-api || true
+          git fetch --unshallow  # Asegura que se obtiene todo el historial
           git fetch heroku main
-          git pull --rebase heroku main || true  # Asegura que estamos sincronizados antes del push
+          git pull --rebase heroku main || true
 
       - name: Deploy to Heroku
         run: |
