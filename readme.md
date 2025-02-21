@@ -8,9 +8,12 @@ KFS API is a service designed to search for available flights based on a specifi
 
 1. Features
 2. Requirements
-3. Documentation
-4. Access to deployed API.
-5. Support
+3. Installation
+4. Documentation
+5. Access to deployed API.
+6. Support
+
+
 
 ---
 
@@ -28,6 +31,31 @@ KFS API is a service designed to search for available flights based on a specifi
 - Python 3.8+
 - Docker and Docker Compose (for running the application in a containerized environment).
 - Git (for version control).
+
+---
+
+# 📦 Installation
+
+1. Clone this repository:
+    ```bash
+    git clone https://github.com/luisgonzalocao/kfs-api.git
+    cd kfs-api
+    ```
+
+2. Copy the example environment file:s
+    ```bash
+    cp .env.example .env
+    ```
+
+3. Build with Docker:
+    ```
+    docker build -t kfs-api .
+    ```
+
+4. Start API Server:
+    ```
+    ocker run --env-file .env -p 8000:8000 kfs-api
+    ```
 
 ---
 
