@@ -9,7 +9,8 @@ KFS API is a service designed to search for available flights based on a specifi
 1. Features
 2. Requirements
 3. Documentation
-8. Support
+4. Access to deployed API.
+5. Support
 
 ---
 
@@ -34,7 +35,12 @@ KFS API is a service designed to search for available flights based on a specifi
 
 The API's Swagger UI provides an interactive interface for exploring all available endpoints and testing requests.
 
-You can access it directly at: http://localhost:8000/docs/
+You can access it directly in local at: http://localhost:8000/docs/
+
+
+# 🚀 Deployed api
+-  api url: https://kfs-api-a119fbfb4496.herokuapp.com/
+- api docs: https://kfs-api-a119fbfb4496.herokuapp.com/docs/
 
 
 #  📧 Support
