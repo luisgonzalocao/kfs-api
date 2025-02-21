@@ -20,6 +20,17 @@ app.add_exception_handler(429, _rate_limit_exceeded_handler)
 app.add_middleware(SlowAPIMiddleware)
 
 
+@app.get("/")
+def root():
+    return {
+        "message": "Welcome to KFS API",
+        "version": settings.VERSION,
+        "docs": f"{settings.BASE_URL}/docs",
+        "openapi": f"{settings.BASE_URL}/openapi.json",
+    }
+
+
+
 @app.get(settings.SEARCH_URL_PATH)
 @limiter.limit(settings.RATE_LIMIT, override_defaults=False)
 def search_journeys(
