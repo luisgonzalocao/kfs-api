@@ -29,7 +29,7 @@ KFS API is a service designed to search for available flights based on a specifi
 
 # ⚙️ Requirements
 - Python 3.8+
-- Docker and Docker Compose (for running the application in a containerized environment).
+- Docker (for running the application in a containerized environment).
 - Git (for version control).
 
 ---
