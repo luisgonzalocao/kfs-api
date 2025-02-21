@@ -1,10 +1,18 @@
+import logging
+
 from fastapi import FastAPI, Query, Depends, Request
+
 from slowapi import Limiter, _rate_limit_exceeded_handler
 from slowapi.util import get_remote_address
 from slowapi.middleware import SlowAPIMiddleware
+
 from kfs.services.search_service import SearchService
 from kfs.utils import validate_date
 from kfs.settings import settings
+
+# Logging global config
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+
 
 # Initialize FastAPI app
 app = FastAPI(title="KFS",
@@ -30,7 +38,6 @@ def root():
     }
 
 
-
 @app.get(settings.SEARCH_URL_PATH)
 @limiter.limit(settings.RATE_LIMIT, override_defaults=False)
 def search_journeys(
@@ -47,5 +54,6 @@ def search_journeys(
                     description="Destination airport code"),
 ):
     """Search for available journeys based on date, origin, and destination."""
-    return SearchService(date_str=date, origin=from_, destination=to).journeys
-
+    return SearchService(date_str=date,
+                         origin=from_,
+                         destination=to).get_response()
