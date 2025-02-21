@@ -27,8 +27,5 @@ class Settings(BaseSettings):
     # Max connections per journey (default: 1 connection, 2 flights)
     MAX_CONNECTIONS: int = Field(default=1)
 
-    # Rate Limiting Settings
-    RATE_LIMIT: str = Field(default="10/minute")
-
 
 settings = Settings()
