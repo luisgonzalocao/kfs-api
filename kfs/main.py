@@ -20,7 +20,7 @@ app.add_exception_handler(429, _rate_limit_exceeded_handler)
 app.add_middleware(SlowAPIMiddleware)
 
 
-@app.get("/")
+@app.get("/", include_in_schema=False)
 def root():
     return {
         "message": "Welcome to KFS API",
@@ -48,3 +48,4 @@ def search_journeys(
 ):
     """Search for available journeys based on date, origin, and destination."""
     return SearchService(date_str=date, origin=from_, destination=to).journeys
+
