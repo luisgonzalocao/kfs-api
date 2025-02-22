@@ -17,14 +17,14 @@ events = [
         "flight_number": "XX1003",
         "departure_city": "BUE",
         "arrival_city": "NYC",
-        "departure_datetime": "2025-03-10T14:00:00.000Z",  # Sale el mismo día que el parámetro
+        "departure_datetime": "2025-03-10T14:00:00.000Z",
         "arrival_datetime": "2025-03-11T04:00:00.000Z"
     },
     {
         "flight_number": "XX1004",
         "departure_city": "NYC",
         "arrival_city": "MAD",
-        "departure_datetime": "2025-03-11T06:00:00.000Z",  # Sale antes de 24 horas
+        "departure_datetime": "2025-03-11T06:00:00.000Z",
         "arrival_datetime": "2025-03-11T09:00:00.000Z"
     },
     {

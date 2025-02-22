@@ -1,6 +1,5 @@
-from kfs.clients.api_client import APIClient
-from kfs.clients.fake_client import FakeClient
-from kfs.clients.client_factory import ClientFactory
+from kfs.clients.clients import APIClient, FakeClient
+from kfs.clients.factory import ClientFactory
 from kfs.settings import settings
 
 

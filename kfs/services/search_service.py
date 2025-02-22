@@ -3,7 +3,7 @@ from datetime import datetime
 from typing import List, Dict
 from fastapi import HTTPException
 
-from kfs.clients.client_factory import ClientFactory
+from kfs.clients.factory import ClientFactory
 from kfs.clients.exceptions import APIClientException
 from kfs.services.strategy_factory import StrategyFactory
 

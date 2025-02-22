@@ -2,7 +2,9 @@ from kfs.services.search_service import SearchService
 from kfs.settings import settings
 
 
-expected_result = [
+#  For this params = {"date": "2025-03-10", "from": "BUE", "to": "MAD"})
+#  This is a expected body response
+TEST_EXPECTED_RESPONSE = [
     {
         "connections": 0,
         "path": [
@@ -46,7 +48,7 @@ def test_search_service_with_test_mode_dfs_strategy(monkeypatch):
     search_service = SearchService(date_str="2025-03-10", origin="BUE", destination="MAD")
 
     result = search_service.get_response()
-    assert result == expected_result
+    assert result == TEST_EXPECTED_RESPONSE
 
 
 def test_search_service_with_test_mode_iterative_strategy(monkeypatch):
@@ -59,4 +61,4 @@ def test_search_service_with_test_mode_iterative_strategy(monkeypatch):
     search_service = SearchService(date_str="2025-03-10", origin="BUE", destination="MAD")
 
     result = search_service.get_response()
-    assert result == expected_result
+    assert result == TEST_EXPECTED_RESPONSE

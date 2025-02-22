@@ -1,7 +1,6 @@
 from unittest.mock import patch
 
-from kfs.clients.api_client import APIClient
-from kfs.clients.fake_client import FakeClient
+from kfs.clients.clients import APIClient, FakeClient
 from kfs.tests.events import events
 
 
@@ -27,7 +26,7 @@ def test_fetch_flight_events():
     client = APIClient()
     mock_response = [{"flight_number": "XX1234", "departure_city": "BUE", "arrival_city": "MAD"}]
 
-    with patch("kfs.clients.api_client.requests.get") as mock_get:
+    with patch("kfs.clients.clients.requests.get") as mock_get:
         mock_get.return_value.json.return_value = mock_response
         mock_get.return_value.raise_for_status = lambda: None
 
