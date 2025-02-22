@@ -27,5 +27,8 @@ class Settings(BaseSettings):
     # Max connections per journey (default: 1 connection, 2 flights)
     MAX_CONNECTIONS: int = Field(default=1)
 
+    # Max events count for process with DFS strategy
+    MAX_DFS_STRATEGY: int = Field(default=500)
+
 
 settings = Settings()
