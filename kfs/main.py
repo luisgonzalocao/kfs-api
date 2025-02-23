@@ -2,27 +2,33 @@ import logging
 
 from fastapi import FastAPI, Query, Depends, Request
 
-from kfs.services.search_service import SearchService
-from kfs.utils import validate_date
+from kfs.services import SearchService
 from kfs.settings import settings
+from kfs.utils import validate_date
 
 # Logging global config
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 
 # Initialize FastAPI app
-app = FastAPI(title="KFS",
-              description="API for searching journeys",
-              version="1.0.0")
+app = FastAPI(title=settings.SERVICE_NAME,
+              description=settings.SERVICE_DESCRIPTION,
+              version=settings.VERSION)
 
 
 @app.get("/", include_in_schema=False)
 def root():
     return {
-        "message": "Welcome to KFS API",
+        "message": settings.SERVICE_NAME,
         "version": settings.VERSION,
-        "docs": f"{settings.BASE_URL}/docs",
-        "openapi": f"{settings.BASE_URL}/openapi.json",
+        "docs": settings.DOCS_URL,
+        "openapi": settings.OPENAPI_URL,
+        "settings": {
+            "CLIENT_MODE": settings.CLIENT_MODE,
+            "MAX_CONNECTIONS": settings.MAX_CONNECTIONS,
+            "MAX_JOURNEY_DURATION_HOURS": settings.MAX_JOURNEY_DURATION_HOURS,
+            "MAX_CONNECTION_TIME_HOURS":  settings.MAX_CONNECTION_TIME_HOURS
+        }
     }
 
 

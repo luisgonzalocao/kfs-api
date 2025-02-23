@@ -8,16 +8,23 @@ load_dotenv()
 class Settings(BaseSettings):
     """Application settings managed by pydantic-settings."""
 
-    model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8", extra="allow", case_sensitive=True)
+    model_config = SettingsConfigDict(env_file=".env",
+                                      env_file_encoding="utf-8",
+                                      extra="allow",
+                                      case_sensitive=True)
 
-    # API Metadata
+    # API Service
     BASE_URL: str = Field(default="http://127.0.0.1:8000")
+    SERVICE_NAME: str = Field(default="KFS-API")
+    SERVICE_DESCRIPTION: str = Field(default="API for searching journeys")
+    DOCS_URL: str = Field(default=str(BASE_URL)+"/docs")
+    OPENAPI_URL: str = Field(default=str(BASE_URL)+"/openapi.json")
     VERSION: str = Field(default="1.0.0")
+    SEARCH_URL_PATH: str = Field(default="/journeys/search")
 
-    # Client & API Configuration
+    # Client API Configuration
     CLIENT_MODE: str = Field(default="API")  # Options: "API", "TEST"
     API_URL: str = Field(default="")
-    SEARCH_URL_PATH: str = Field(default="/journeys/search")
 
     # Time constraints
     MAX_JOURNEY_DURATION_HOURS: int = Field(default=24)

@@ -1,7 +1,7 @@
 from unittest import TestCase
 from unittest.mock import patch
 
-from kfs.services.search_service import SearchService
+from kfs.services import SearchService
 from kfs.settings import settings
 
 
