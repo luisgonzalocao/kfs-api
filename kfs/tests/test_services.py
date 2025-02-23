@@ -1,5 +1,36 @@
+from unittest import TestCase
+from unittest.mock import patch
+
 from kfs.services.search_service import SearchService
 from kfs.settings import settings
+
+
+class SearchServiceTestCase(TestCase):
+
+    @patch.object(settings, "CLIENT_MODE", "TEST")
+    def test_search_service_with_test_mode_dfs_strategy(self):
+        """Tests that SearchService works correctly in TEST mode with
+        FakeClient and dfs strategy."""
+
+        search_service = SearchService(date_str="2025-03-10",
+                                       origin="BUE",
+                                       destination="MAD")
+
+        result = search_service.get_response()
+        self.assertEqual(result, TEST_EXPECTED_RESPONSE)
+
+    @patch.object(settings, "CLIENT_MODE", "TEST")
+    @patch.object(settings, "MAX_DFS_STRATEGY", 0)
+    def test_search_service_with_test_mode_iterative_strategy(self):
+        """Tests that SearchService works correctly in TEST mode with
+        FakeClient and iterative strategy"""
+
+        search_service = SearchService(date_str="2025-03-10",
+                                       origin="BUE",
+                                       destination="MAD")
+
+        result = search_service.get_response()
+        self.assertEqual(result, TEST_EXPECTED_RESPONSE)
 
 
 #  For this params = {"date": "2025-03-10", "from": "BUE", "to": "MAD"})
@@ -37,28 +68,3 @@ TEST_EXPECTED_RESPONSE = [
         ]
     }
 ]
-
-
-def test_search_service_with_test_mode_dfs_strategy(monkeypatch):
-    """Tests that SearchService works correctly in TEST mode with FakeClient
-    and dfs strategy."""
-
-    monkeypatch.setattr(settings, "CLIENT_MODE", "TEST")
-
-    search_service = SearchService(date_str="2025-03-10", origin="BUE", destination="MAD")
-
-    result = search_service.get_response()
-    assert result == TEST_EXPECTED_RESPONSE
-
-
-def test_search_service_with_test_mode_iterative_strategy(monkeypatch):
-    """Tests that SearchService works correctly in TEST mode with FakeClient
-    and iterative strategy"""
-
-    monkeypatch.setattr(settings, "CLIENT_MODE", "TEST")
-    monkeypatch.setattr(settings, "MAX_DFS_STRATEGY", 0)
-
-    search_service = SearchService(date_str="2025-03-10", origin="BUE", destination="MAD")
-
-    result = search_service.get_response()
-    assert result == TEST_EXPECTED_RESPONSE

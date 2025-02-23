@@ -1,3 +1,6 @@
+from unittest import TestCase
+from unittest.mock import patch
+
 from datetime import datetime
 
 from kfs.services.strategies import IterativeSearchStrategy, DFSSearchStrategy
@@ -16,21 +19,20 @@ events = [
 ]
 
 
-def test_get_iterative_strategy(monkeypatch):
-    """Tests that the StrategyFactory returns IterativeSearchStrategy when
-    settings.MAX_DFS_STRATEGY < len(events)"""
+class SearchStrategiesTestCase(TestCase):
 
-    monkeypatch.setattr(settings, "MAX_DFS_STRATEGY", 0)
+    @patch.object(settings, "MAX_DFS_STRATEGY", 0)
+    def test_get_iterative_strategy(self):
+        """Tests that the StrategyFactory returns IterativeSearchStrategy when
+        settings.MAX_DFS_STRATEGY < len(events)"""
 
-    strategy_class = StrategyFactory.get_strategy_class(events)
-    assert strategy_class is IterativeSearchStrategy
+        strategy_class = StrategyFactory.get_strategy_class(events)
+        self.assertIs(strategy_class, IterativeSearchStrategy)
 
+    @patch.object(settings, "MAX_DFS_STRATEGY", 1)
+    def test_get_dfs_strategy(self):
+        """Tests that the StrategyFactory returns DFSSearchStrategy when
+        settings.MAX_DFS_STRATEGY >= len(events)"""
 
-def test_get_dfs_strategy(monkeypatch):
-    """Tests that the StrategyFactory returns DFSSearchStrategy when
-    settings.MAX_DFS_STRATEGY >= len(events)"""
-
-    monkeypatch.setattr(settings, "MAX_DFS_STRATEGY", 1)
-
-    strategy_class = StrategyFactory.get_strategy_class(events)
-    assert strategy_class is DFSSearchStrategy
+        strategy_class = StrategyFactory.get_strategy_class(events)
+        self.assertIs(strategy_class, DFSSearchStrategy)

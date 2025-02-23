@@ -1,4 +1,4 @@
-from datetime import timedelta
+from datetime import timedelta, date
 from typing import List
 from itertools import combinations
 
@@ -10,7 +10,11 @@ from abc import ABC
 
 class BaseStrategy(ABC):
 
-    def __init__(self, origin: str, destination: str, events: List[FlightEvent], date):
+    def __init__(self,
+                 origin: str,
+                 destination: str,
+                 events: List[FlightEvent],
+                 date: date):
         self.origin = origin
         self.destination = destination
         self.events = events
@@ -21,7 +25,8 @@ class BaseStrategy(ABC):
 
 
 class IterativeSearchStrategy(BaseStrategy):
-    """Handles the flight search logic, finding direct and connecting journeys."""
+    """Handles the flight search logic, finding direct and connecting
+    journeys."""
 
     def find_all_journeys(self) -> List[Journey]:
         """Finds all valid journeys"""
@@ -39,37 +44,40 @@ class IterativeSearchStrategy(BaseStrategy):
 
         # Find connecting flights
         for num_connections in range(1, settings.MAX_CONNECTIONS + 1):
-            # Generate all possible combinations of flights with the given number of connections
-            for flight_combination in combinations(self.events, num_connections + 1):
+            # Generate all possible combinations of flights with the given
+            # number of connections
+            for path in combinations(self.events, num_connections + 1):
                 # Check if the combination forms a valid journey
-                if self._is_valid_journey(flight_combination):
-                    journeys.append(Journey(connections=num_connections, path=list(flight_combination)))
+                if self._is_valid_journey(path):
+                    journeys.append(
+                        Journey(connections=num_connections, path=list(path))
+                    )
 
         return journeys
 
-    def _is_valid_journey(self, flight_combination: List[FlightEvent]) -> bool:
+    def _is_valid_journey(self, path: List[FlightEvent]) -> bool:
         """Checks if a combination of flights forms a valid journey."""
         # Check if the first flight departs on the search date
-        if flight_combination[0].departure_time.date() != self.date:
+        if path[0].departure_time.date() != self.date:
             return False
 
         # Check if the journey starts at the origin and ends at the destination
-        if flight_combination[0].origin != self.origin or flight_combination[-1].destination != self.destination:
+        if path[0].origin != self.origin or path[-1].destination != self.destination:
             return False
 
         # Check if the flights are connected in the correct order
-        for i in range(len(flight_combination) - 1):
-            if flight_combination[i].destination != flight_combination[i + 1].origin:
+        for i in range(len(path) - 1):
+            if path[i].destination != path[i + 1].origin:
                 return False
 
         # Check if the connection time between flights is within the limit
-        for i in range(len(flight_combination) - 1):
-            connection_time = flight_combination[i + 1].departure_time - flight_combination[i].arrival_time
+        for i in range(len(path) - 1):
+            connection_time = path[i + 1].departure_time - path[i].arrival_time
             if connection_time.total_seconds() > settings.MAX_CONNECTION_TIME_HOURS * 3600:
                 return False
 
         # Check if the total journey time is within 24 hours
-        total_journey_time = flight_combination[-1].arrival_time - flight_combination[0].departure_time
+        total_journey_time = path[-1].arrival_time - path[0].departure_time
         if total_journey_time.total_seconds() > 24 * 3600:
             return False
 
