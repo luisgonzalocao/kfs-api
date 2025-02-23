@@ -55,7 +55,8 @@ class FlightEvent:
 
 class Journey:
     """
-    Represents a complete journey, which can include one or multiple flight events.
+    Represents a complete journey, which can include one or multiple flight
+    events.
 
     Attributes:
         connections (int): Number of connections in the journey.
@@ -67,12 +68,7 @@ class Journey:
         self.path = path
 
     def to_dict(self) -> Dict:
-        """
-        Converts the Journey instance to a dictionary.
-
-        Returns:
-            Dict: Dictionary containing journey information.
-        """
+        """Converts the Journey instance to a dictionary."""
         return {
             "connections": self.connections,
             "path": [event.to_dict() for event in self.path],
@@ -110,15 +106,20 @@ class SearchService:
 
     def _fetch_events(self):
         try:
-            return [FlightEvent.from_raw(flight) for flight in self.client.fetch_flight_events()]
+            return [
+                FlightEvent.from_raw(flight)
+                for flight in self.client.fetch_flight_events()
+            ]
         except APIClientException:
             detail = "Error fetching flight events from the external API."
-        except Exception as e:
-            logging.error(f"Unexpected Exception:  {str(e)}")
+            logging.error(f"APIClient error: {detail}")
+        except Exception:
             detail = "Unexpected error fetching flight events."
+            logging.error(f"Unexpected error: {detail}")
         raise HTTPException(
             status_code=503,
-            detail=detail)
+            detail=detail
+        )
 
     def get_response(self) -> List[Dict]:
         """Returns the found journeys in the format required by the API."""
