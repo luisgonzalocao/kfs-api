@@ -1,7 +1,7 @@
 from unittest import TestCase
 from unittest.mock import patch
 
-from kfs.clients.clients import APIClient, FakeClient
+from kfs.clients import APIClient, FakeClient
 from kfs.tests.events import events
 
 
@@ -33,7 +33,7 @@ class ClientsTestCase(TestCase):
              "arrival_city": "MAD"}
         ]
 
-        with patch("kfs.clients.clients.requests.get") as mock_get:
+        with patch("kfs.clients.requests.get") as mock_get:
             mock_get.return_value.json.return_value = mock_response
             mock_get.return_value.raise_for_status = lambda: None
 

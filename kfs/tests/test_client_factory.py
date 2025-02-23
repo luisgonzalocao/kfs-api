@@ -1,7 +1,7 @@
 from unittest import TestCase
 from unittest.mock import patch
 
-from kfs.clients.clients import APIClient, FakeClient
+from kfs.clients import APIClient, FakeClient
 from kfs.clients.factory import ClientFactory
 from kfs.settings import settings
 
@@ -14,11 +14,11 @@ class ClientFactoryTestCase(TestCase):
         is 'TEST'."""
 
         client = ClientFactory.get_client()
-        self.assertTrue(isinstance(client, FakeClient))
+        self.assertIsInstance(client, FakeClient)
 
     @patch.object(settings, "CLIENT_MODE", "API")
     def test_get_client_api_mode(self):
         """Tests that the ClientFactory returns APIClient when CLIENT_MODE
         is 'API'."""
         client = ClientFactory.get_client()
-        self.assertTrue(isinstance(client, APIClient))
+        self.assertIsInstance(client, APIClient)

@@ -5,7 +5,7 @@ from datetime import datetime
 
 from kfs.services.strategies import IterativeSearchStrategy, DFSSearchStrategy
 from kfs.services.strategy_factory import StrategyFactory
-from kfs.services.search_service import FlightEvent
+from kfs.services import FlightEvent
 from kfs.settings import settings
 
 events = [

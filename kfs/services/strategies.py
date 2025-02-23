@@ -3,7 +3,7 @@ from typing import List
 from itertools import combinations
 
 from kfs.settings import settings
-from kfs.services.search_service import Journey, FlightEvent
+from kfs.services import Journey, FlightEvent
 
 from abc import ABC
 

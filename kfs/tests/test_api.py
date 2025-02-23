@@ -71,8 +71,15 @@ class APITestCase(TestCase):
         self.assertEqual(
             response.json(),
             {
-                "message": "Welcome to KFS API",
-                "version": app.version,
-                "docs": f"{settings.BASE_URL}/docs",
-                "openapi": f"{settings.BASE_URL}/openapi.json",
-            })
+                "message": settings.SERVICE_NAME,
+                "version": settings.VERSION,
+                "docs": settings.DOCS_URL,
+                "openapi": settings.OPENAPI_URL,
+                "settings": {
+                    "CLIENT_MODE": settings.CLIENT_MODE,
+                    "MAX_CONNECTIONS": settings.MAX_CONNECTIONS,
+                    "MAX_JOURNEY_DURATION_HOURS": settings.MAX_JOURNEY_DURATION_HOURS,
+                    "MAX_CONNECTION_TIME_HOURS":  settings.MAX_CONNECTION_TIME_HOURS
+                }
+            }
+        )

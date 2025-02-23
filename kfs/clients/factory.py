@@ -1,7 +1,7 @@
 from typing import Union
 
 from kfs.settings import settings
-from kfs.clients.clients import APIClient, FakeClient
+from kfs.clients import APIClient, FakeClient
 
 
 class ClientFactory:
@@ -10,4 +10,7 @@ class ClientFactory:
     @classmethod
     def get_client(cls) -> Union[APIClient, FakeClient]:
         """Returns an instance of the appropriate client."""
-        return {"TEST": FakeClient, "API": APIClient}[settings.CLIENT_MODE]()
+        return {
+            "TEST": FakeClient,
+            "API": APIClient
+        }[settings.CLIENT_MODE]()
