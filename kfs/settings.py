@@ -17,10 +17,10 @@ class Settings(BaseSettings):
     BASE_URL: str = Field(default="http://127.0.0.1:8000")
     SERVICE_NAME: str = Field(default="KFS-API")
     SERVICE_DESCRIPTION: str = Field(default="API for searching journeys")
-    DOCS_URL: str = Field(default=str(BASE_URL)+"/docs")
-    OPENAPI_URL: str = Field(default=str(BASE_URL)+"/openapi.json")
     VERSION: str = Field(default="1.0.0")
-    SEARCH_URL_PATH: str = Field(default="/journeys/search")
+    DOCS_PATH: str = Field(default="/docs")
+    OPENAPI_PATH: str = Field(default="/openapi.json")
+    SEARCH_PATH: str = Field(default="/journeys/search")
 
     # Client API Configuration
     CLIENT_MODE: str = Field(default="API")  # Options: "API", "TEST"
@@ -36,6 +36,11 @@ class Settings(BaseSettings):
 
     # Max events count for process with DFS strategy
     MAX_DFS_STRATEGY: int = Field(default=500)
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.DOCS_URL = f"{self.BASE_URL}{self.DOCS_PATH}"
+        self.OPENAPI_URL = f"{self.BASE_URL}{self.OPENAPI_PATH}"
 
 
 settings = Settings()

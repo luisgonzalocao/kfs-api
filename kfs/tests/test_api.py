@@ -23,7 +23,7 @@ class APITestCase(TestCase):
             return_value = APIClientException()
             mocked.return_value.fetch_flight_events.side_effect = return_value
 
-            response = self.client.get(settings.SEARCH_URL_PATH,
+            response = self.client.get(settings.SEARCH_PATH,
                                        params={"date": "2025-02-21",
                                                "from": "BUE",
                                                "to": "MAD"})
@@ -42,7 +42,7 @@ class APITestCase(TestCase):
             return_value = Exception()
             mocked.return_value.fetch_flight_events.side_effect = return_value
 
-            response = self.client.get(settings.SEARCH_URL_PATH,
+            response = self.client.get(settings.SEARCH_PATH,
                                        params={"date": "2025-02-21",
                                                "from": "BUE",
                                                "to": "MAD"})
@@ -57,7 +57,7 @@ class APITestCase(TestCase):
     def test_search_journeys(self):
         """Tests that the API returns a success responses with status 200"""
 
-        response = self.client.get(settings.SEARCH_URL_PATH,
+        response = self.client.get(settings.SEARCH_PATH,
                                    params={"date": "2025-03-10",
                                            "from": "BUE",
                                            "to": "MAD"})
