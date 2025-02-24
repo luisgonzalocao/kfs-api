@@ -32,7 +32,7 @@ def root():
     }
 
 
-@app.get(settings.SEARCH_URL_PATH)
+@app.get(settings.SEARCH_PATH)
 def search_journeys(
     request: Request,
     date: str = Depends(validate_date),
